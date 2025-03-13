@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filmes X</title>
+    <style>
+        body {
+    background-color: #0f0f0f;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: background-image 0.5s ease-in-out;
+    background-size: cover;
+    background-position: center;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* Define 6 colunas */
+    gap: 15px;
+    max-width: 90%;
+    margin: 100px auto;
+    justify-items: center; /* Centraliza os itens dentro de cada grid */
+}
+
+.filme {
+    background-color: #1a1a1a;
+    padding: 15px;
+    
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    width: 100%; /* Faz com que os itens se ajustem ao tamanho da grid */
+    max-width: 200px; /* Limita o tamanho do item */
+}
+
+.filme img {
+    width: 100%;
+    height: 300px;
+    aspect-ratio: 1/1; /* Mantém as imagens quadradas */
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.btn-assistir {
+    display: inline-block;
+    background-color: #0f0;
+    color: #000;
+    padding: 8px 12px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.filme:hover, .filme.selecionado {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px #0f0;
+}
+
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: repeat(3, 1fr); /* 3 colunas para telas menores */
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        grid-template-columns: 1fr; /* 1 coluna para telas muito pequenas */
+    }
+}
+
+
+    </style>
+</head>
+<body>
+        
+<div class="container">
+  <div class="filme" data-bg="#">
+    <img src="https://upload.wikimedia.org/wikipedia/pt/thumb/5/59/Captain_Marvel_%282018%29.jpg/220px-Captain_Marvel_%282018%29.jpg" alt="Capitão Marvel">
+    <a href="#" class="btn-assistir">Assistir agora</a>
+</div>
+<div class="filme" data-bg="#">
+    <img src="https://upload.wikimedia.org/wikipedia/pt/thumb/d/d8/Capit%C3%A3o_Am%C3%A9rica_O_Primeiro_Vingador_-_Poster.jpg/220px-Capit%C3%A3o_Am%C3%A9rica_O_Primeiro_Vingador_-_Poster.jpg" alt="Capitão América: O Primeiro Vingador">
+    <a href="#" class="btn-assistir">Assistir agora</a>
+</div>
+    
+<div class="filme" data-bg="#">
+    <img src="https://uauposters.com.br/media/catalog/product/1/6/161320140525-uau-posters-filmes-homem-de-ferro--iron-man--2.jpg" alt="Homem de Ferro">
+    <a href="#" class="btn-assistir">Assistir agora</a>
+</div>
+
+<div class="filme" data-bg="#">
+    <img src="https://img.elo7.com.br/product/zoom/42E9DDE/poster-1-o-incrivel-hulk-2008-mdf-3mm-28x40cm-filmes.jpg" alt="O Incrível Hulk">
+    <a href="#" class="btn-assistir">Assistir agora</a>
+</div>
+
+<div class="filme" data-bg="#">
+    <img src="https://img.elo7.com.br/product/zoom/26771F6/big-poster-filme-homem-de-ferro-2-lo04-tamanho-90x60-cm-iron-man.jpg" alt="Homem de Ferro 2">
+    <a href="#" class="btn-assistir">Assistir agora</a>
+</div>
+
+<div class="filme" data-bg="#">
+    <img src="https://uauposters.com.br/media/catalog/product/1/9/198120140605-198120140605-uau-posters-filmes-thor--thor-.jpg" alt="Thor">
+    <a href="#" class="btn-assistir">Assistir agora</a>
+</div>
+    
+</div>
+
+   
+    <div class="filme" data-bg="#">
+    <a href="index.html" class="btn-assistir">Voltar</a>
+</div>
+
+
+
+    <script>
+        let filmes = document.querySelectorAll(".filme");
+        let indexSelecionado = 0;
+
+        function atualizarSelecao() {
+            filmes.forEach(filme => filme.classList.remove("selecionado"));
+            let filmeAtual = filmes[indexSelecionado];
+            filmeAtual.classList.add("selecionado");
+            filmeAtual.scrollIntoView({ behavior: "smooth", block: "center" });
+            
+            // Altera o fundo conforme a seleção pelo teclado
+            document.body.style.backgroundImage = `url(${filmeAtual.getAttribute("data-bg")})`;
+        }
+
+        document.addEventListener("keydown", function(event) {
+            let colunas = Math.floor(document.querySelector(".container").offsetWidth / filmes[0].offsetWidth);
+
+            if (event.key === "ArrowRight") {
+                if (indexSelecionado % colunas < colunas - 1 && indexSelecionado < filmes.length - 1) {
+                    indexSelecionado++;
+                }
+            } else if (event.key === "ArrowLeft") {
+                if (indexSelecionado % colunas > 0) {
+                    indexSelecionado--;
+                }
+            } else if (event.key === "ArrowDown") {
+                if (indexSelecionado + colunas < filmes.length) {
+                    indexSelecionado += colunas;
+                }
+            } else if (event.key === "ArrowUp") {
+                if (indexSelecionado - colunas >= 0) {
+                    indexSelecionado -= colunas;
+                }
+            } else if (event.key === "Enter") {
+                window.open(filmes[indexSelecionado].querySelector(".btn-assistir").href, "_blank");
+            }
+
+            atualizarSelecao();
+        });
+
+        atualizarSelecao();
+
+        filmes.forEach(filme => {
+            filme.addEventListener("mouseenter", function() {
+                document.body.style.backgroundImage = `url(${this.getAttribute("data-bg")})`;
+            });
+
+            filme.addEventListener("mouseleave", function() {
+                atualizarSelecao(); // Mantém a imagem do filme selecionado
+            });
+        });
+    </script>
+</body>
+</html>
